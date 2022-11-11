@@ -1,7 +1,7 @@
 # vip_Protect_Client
 Protect Client
 
-The plugin allows users to set a password for their Steam_id
+The plugin allows users (ViP и Admin) to set a password for their Steam_id
 
 Плагин позволяет пользователям устанавливать на свой Steam_id пароль
 
