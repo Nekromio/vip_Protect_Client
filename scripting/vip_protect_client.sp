@@ -1,8 +1,7 @@
 #pragma semicolon 1
+#pragma newdecls required
 
 #include <smlib>
-
-#pragma newdecls required
 #include <colors_ws>
 #include <vip_core>
 
@@ -30,7 +29,7 @@ public void OnPluginStart()
 {
 	LoadTranslations("vip_protet_client.phrases");
 	
-	cvMySQl = CreateConVar("sm_parachute_mysql", "1", "1 использовать MySQL базу, 0 - использовать SqLite локальную базу", _, true, 0.0, true, 1.0);
+	cvMySQl = CreateConVar("sm_protect_mysql", "1", "1 использовать MySQL базу, 0 - использовать SqLite локальную базу", _, true, 0.0, true, 1.0);
 	
 	BuildPath(Path_SM, sFile, sizeof(sFile), "logs/protet_client.log");
 	
