@@ -12,7 +12,7 @@ Profit
 Requirements:
 1. https://hlmod.ru/resources/colors-inc-cveta-csgo-css-css-v34.2358/
 2. https://hlmod.ru/resources/vip-core.245/
-3. https://github.com/bcserv/smlib
+3. https://github.com/bcserv/smlib/tree/transitional_syntax
 
 MySQL and SQLite support
 
