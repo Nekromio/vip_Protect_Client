@@ -21,7 +21,7 @@ public Plugin myinfo =
 	name = "Protect Client", 
     author = "Nek.'a 2x2 | ggwp.site | github.com/Nekromio", 
     description = "Protect Client", 
-    version = "1.0", 
+    version = "1.0.1", 
     url = "https://ggwp.site/" 
 };
 
@@ -41,15 +41,23 @@ public void OnPluginStart()
 	RequestFrame(DatabaseConnect);
 }
 
-public void OnClientPostAdminCheck(int client)
+public void VIP_OnClientLoaded(int client, bool bIsVIP)
 {
-	if(!IsFakeClient(client) && (VIP_IsClientVIP(client) || GetUserFlagBits(client)))
-	{
-		char sQuery[512], sSteam[32];
-		GetClientAuthId(client, AuthId_Steam2, sSteam, sizeof(sSteam), true);
-		FormatEx(sQuery, sizeof(sQuery), "SELECT `password` FROM `protect_client` WHERE `steam_id` = '%s';", sSteam);	// Формируем запрос
-		hDatabase.Query(SQL_Callback_SelectClient, sQuery, GetClientUserId(client));
-	}
+	if(!bIsVIP)
+		return;
+
+	CheckConntect(client);
+}
+
+stock void CheckConntect(int client)
+{
+	char sQuery[512], sSteam[32], ip[32];
+	GetClientAuthId(client, AuthId_Steam2, sSteam, sizeof(sSteam), true);
+	GetClientIP(client, ip, sizeof(ip));
+
+	LogToFile(sFile, "Зашёл ViP игрок [%N][%s][%s]", client, sSteam, ip);
+	FormatEx(sQuery, sizeof(sQuery), "SELECT `password` FROM `protect_client` WHERE `steam_id` = '%s';", sSteam);	// Формируем запрос
+	hDatabase.Query(SQL_Callback_SelectClient, sQuery, GetClientUserId(client));
 }
 
 public Action Command_Protect(int client, any args)
@@ -75,7 +83,7 @@ public Action Command_Protect(int client, any args)
 		FormatEx(sQuery, sizeof(sQuery), "SELECT `password` FROM `protect_client` WHERE `steam_id` = '%s';", sSteam);
 		hDatabase.Query(SQL_Callback_VerificationExistence, sQuery, GetClientUserId(client)); 
 	}
-	return Plugin_Changed;
+	return Plugin_Handled;
 }
 
 public void SQL_Callback_VerificationExistence(Database hDatabaseLocal, DBResultSet hResults, const char[] sError, any iUserID)
@@ -217,6 +225,6 @@ void CheckClient(int client, bool auth)
 			KickClient(client, "%t", "TagLog", "Kick login attempt");
 		}
 	}
-	//else
-	//	LogToFile(sFile, "Игроку [%N] пароль не установлен, он заходит без авторизации !", client);
+	else
+		LogToFile(sFile, "Игроку [%N] пароль не установлен, он заходит без авторизации !", client);
 }
